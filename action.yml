@@ -25,8 +25,9 @@ runs:
         echo "GOPRIVATE=github.com/shipwallet" >> $GITHUB_ENV
         full_repo="${{ github.repository }}"
         repository=${full_repo//shipwallet\//''}
-        echo "REPOSITORY=$repository" >> $GITHUB_ENV
-        full_sha="${{ github.sha }}"
+        echo "IGDCTX_REPOSITORY=$repository" >> $GITHUB_ENV
+        short_sha="echo ${{ github.sha }} | cut -c1-7"
+        echo "IGDCTX_GITSHORTSHA=$short_sha" >> $GITHUB_ENV
 
     - name: Checkout Ingrid Actions Repo
       uses: actions/checkout@v3
