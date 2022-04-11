@@ -1,10 +1,7 @@
 name: Setup Ingrid Context
 description: |
   This action checkouts Ingrid actions private repository and also the application repository.
-  In addition to the checkout, it also pre-fills environment variables needed:
-  - GOPRIVATE
-  - IGDCTX_REPOSITORY
-  - IGDCTX_GITSHORTSHA
+  In addition to the checkout, it also uses FranzDiebold/github-env-vars-action to pass more env variables.
 
 inputs:
   path:
@@ -19,16 +16,7 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - name: Setup Environment Variables
-      shell: bash
-      run: |
-        echo "GOPRIVATE=github.com/shipwallet" >> $GITHUB_ENV
-        full_repo="${{ github.repository }}"
-        repository=${full_repo//shipwallet\//''}
-        echo "IGDCTX_REPOSITORY=$repository" >> $GITHUB_ENV
-        short_sha=$("echo ${{ github.sha }} | cut -c1-7")
-        echo "IGDCTX_GITSHORTSHA=$short_sha" >> $GITHUB_ENV
-
+    - uses: FranzDiebold/github-env-vars-action@v2
     - name: Checkout Ingrid Actions Repo
       uses: actions/checkout@v3
       with:
@@ -40,5 +28,5 @@ runs:
     - name: Checkout Application Repo
       uses: actions/checkout@v3
       with:
-        path: ${{ env.REPOSITORY }}
+        path: ${{ env.CI_REPOSITORY_NAME }}
 
