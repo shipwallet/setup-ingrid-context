@@ -6,13 +6,11 @@ This repo contains the GitHub Action used to download the latest version of our 
 
 The repository where the actions are stored is a private repository within our Organization.
 
-This action also checkouts the repository with our application code and setups the environment variables needed for our pipelines. 
+This action also checkouts the repository with our application code and setups the environment variables needed for our pipelines.
 
 # Usage
 
 This action uses an environment variable name `GH_TOKEN_SW_BOT` to authenticate and checkout the private repo.
-
-This action sets two environment variables: `REPOSITORY` and `GOPRIVATE`.
 
 <!-- start usage -->
 ```yaml

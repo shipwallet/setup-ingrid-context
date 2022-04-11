@@ -1,27 +1,22 @@
 name: Setup Ingrid Context
 description: |
   This action checkouts Ingrid actions private repository and also the application repository.
-  In addition to the checkout, it also pre-fills two environment Variables needed - `REPOSITORY` and `GOPRIVATE`
+  In addition to the checkout, it also uses FranzDiebold/github-env-vars-action to pass more env variables.
 
 inputs:
   path:
     description: The path where the actions should be checked out
     default: "ingrid-actions"
+    required: false
   ref:
     description: The revision of the ingrid-actions you are trying to checkout
     default: ""
+    required: false
 
 runs:
   using: "composite"
   steps:
-    - name: Setup Environment Variables
-      shell: bash
-      run: |
-        echo "GOPRIVATE=github.com/shipwallet" >> $GITHUB_ENV
-        full_repo="${{ github.repository }}"
-        repository=${full_repo//shipwallet\//''}
-        echo "REPOSITORY=$repository" >> $GITHUB_ENV
-
+    - uses: FranzDiebold/github-env-vars-action@v2
     - name: Checkout Ingrid Actions Repo
       uses: actions/checkout@v3
       with:
@@ -33,5 +28,5 @@ runs:
     - name: Checkout Application Repo
       uses: actions/checkout@v3
       with:
-        path: ${{ env.REPOSITORY }}
+        path: ${{ env.CI_REPOSITORY_NAME }}
 
