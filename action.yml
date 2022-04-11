@@ -26,7 +26,7 @@ runs:
         full_repo="${{ github.repository }}"
         repository=${full_repo//shipwallet\//''}
         echo "IGDCTX_REPOSITORY=$repository" >> $GITHUB_ENV
-        short_sha="echo ${{ github.sha }} | cut -c1-7"
+        short_sha=$("echo ${{ github.sha }} | cut -c1-7")
         echo "IGDCTX_GITSHORTSHA=$short_sha" >> $GITHUB_ENV
 
     - name: Checkout Ingrid Actions Repo
