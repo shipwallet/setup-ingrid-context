@@ -34,4 +34,5 @@ runs:
       uses: actions/checkout@v3
       with:
         path: ${{ env.CI_REPOSITORY_NAME }}
+        token: ${{ env.GH_TOKEN_SW_BOT }}
 
