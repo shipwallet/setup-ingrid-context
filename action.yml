@@ -12,6 +12,10 @@ inputs:
     description: The revision of the ingrid-actions you are trying to checkout
     default: ""
     required: false
+  working_directory:
+    description: The working directory where the application should be checked out
+    default: ""
+    required: false
 
 runs:
   using: "composite"
@@ -36,3 +40,5 @@ runs:
         path: ${{ env.CI_REPOSITORY_NAME }}
         token: ${{ env.GH_TOKEN_SW_BOT }}
 
+    - name: Set CI_REPOSITORY_NAME
+      run: echo "CI_REPOSITORY_NAME=${{ inputs.working_directory || env.CI_REPOSITORY_NAME }}" >> $GITHUB_ENV
