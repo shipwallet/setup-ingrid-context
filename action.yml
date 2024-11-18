@@ -16,6 +16,10 @@ inputs:
     description: The working directory where the application should be checked out
     default: ""
     required: false
+  fetch_depth:
+    description: Number of commits to fetch
+    default: '1'
+    required: false
 
 runs:
   using: "composite"
@@ -39,6 +43,7 @@ runs:
       with:
         path: ${{ env.CI_REPOSITORY_NAME }}
         token: ${{ env.GH_TOKEN_SW_BOT }}
+        fetch-depth: ${{ inputs.fetch_depth }}
 
     - name: Set CI_REPOSITORY_NAME
       shell: bash
