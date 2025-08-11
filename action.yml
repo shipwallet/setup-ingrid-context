@@ -31,7 +31,7 @@ runs:
       run: echo "GOPRIVATE=github.com/shipwallet" >> $GITHUB_ENV
 
     - name: Checkout Ingrid Actions Repo
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
       with:
         repository: shipwallet/github-actions
         token: ${{ env.GH_TOKEN_SW_BOT }}
@@ -39,7 +39,7 @@ runs:
         ref: ${{ inputs.ref }}
 
     - name: Checkout Application Repo
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
       with:
         path: ${{ env.CI_REPOSITORY_NAME }}
         token: ${{ env.GH_TOKEN_SW_BOT }}
