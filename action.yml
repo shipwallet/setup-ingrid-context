@@ -2,47 +2,67 @@ name: Setup Ingrid Context
 description: |
   This action checkouts Ingrid actions private repository and also the application repository.
   In addition to the checkout, it also uses FranzDiebold/github-env-vars-action to pass more env variables.
+  Uses a Github App for high-rate-limit authentication.
 
 inputs:
   path:
-    description: The path where the actions should be checked out
+    description: "Path where actions should be checked out"
     default: "ingrid-actions"
     required: false
   ref:
-    description: The revision of the ingrid-actions you are trying to checkout
-    default: ""
+    description: "Git Ref"
+    default: "master"
     required: false
   working_directory:
-    description: The working directory where the application should be checked out
+    description: "App working directory"
     default: ""
     required: false
   fetch_depth:
-    description: Number of commits to fetch
+    description: "Number of commits to fetch"
     default: '1'
     required: false
+  app_id:
+      description: "GitHub App ID"
+      required: true
+  app_private_key:
+    description: "GitHub App Private Key"
+    required: true
+
+outputs:
+  token:
+    description: "The generated GitHub App Token"
+    value: ${{ steps.app-token.outputs.token }}
 
 runs:
   using: "composite"
   steps:
     - uses: FranzDiebold/github-env-vars-action@v2
 
+    - name: Generate GitHub App Token
+      id: app-token
+      uses: actions/create-github-app-token@v2
+      with:
+        app-id: ${{ inputs.app_id }}
+        private-key: ${{ inputs.app_private_key }}
+        owner: ${{ github.repository_owner }}
+
     - name: Setup GOPRIVATE Variable
       shell: bash
       run: echo "GOPRIVATE=github.com/shipwallet" >> $GITHUB_ENV
 
     - name: Checkout Ingrid Actions Repo
-      uses: actions/checkout@v4
+      uses: actions/checkout@v6
       with:
         repository: shipwallet/github-actions
-        token: ${{ env.GH_TOKEN_SW_BOT }}
+        token: ${{ steps.app-token.outputs.token }}
         path: ${{ inputs.path }}
         ref: ${{ inputs.ref }}
 
     - name: Checkout Application Repo
-      uses: actions/checkout@v4
+      uses: actions/checkout@v6
       with:
         path: ${{ env.CI_REPOSITORY_NAME }}
-        token: ${{ env.GH_TOKEN_SW_BOT }}
+        token: ${{ steps.app-token.outputs.token }}
         fetch-depth: ${{ inputs.fetch_depth }}
 
     - name: Set CI_REPOSITORY_NAME
