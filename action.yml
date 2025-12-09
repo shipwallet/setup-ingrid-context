@@ -10,7 +10,7 @@ inputs:
     required: false
   ref:
     description: The revision of the ingrid-actions you are trying to checkout
-    default: ""
+    default: "master"
     required: false
   working_directory:
     description: The working directory where the application should be checked out
