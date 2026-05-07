@@ -46,9 +46,17 @@ runs:
         private-key: ${{ inputs.app_private_key }}
         owner: ${{ github.repository_owner }}
 
+    - name: Export GitHub App token for legacy Ingrid actions
+      shell: bash
+      run: |
+        echo "GH_TOKEN_SW_BOT=${{ steps.app-token.outputs.token }}" >> "$GITHUB_ENV"
+        echo "GITHUB_TOKEN=${{ steps.app-token.outputs.token }}" >> "$GITHUB_ENV"
+
     - name: Setup GOPRIVATE Variable
       shell: bash
-      run: echo "GOPRIVATE=github.com/shipwallet" >> $GITHUB_ENV
+      run: |
+        echo "GOPRIVATE=github.com/shipwallet/*" >> "$GITHUB_ENV"
+        echo "GONOSUMDB=github.com/shipwallet/*" >> "$GITHUB_ENV"
 
     - name: Checkout Ingrid Actions Repo
       uses: actions/checkout@v6
