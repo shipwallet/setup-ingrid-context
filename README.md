@@ -1,6 +1,8 @@
 # Setup Ingrid Context
 
-**This is a public repository**
+> **⚠️ This repository is archived. It is no longer actively maintained or supported and will be made private in the future.**
+
+---
 
 This repo contains the GitHub Action used to download the latest version of our custom actions.
 
